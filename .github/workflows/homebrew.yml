@@ -1,0 +1,76 @@
+name: Homebrew
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  update-homebrew-tap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+        with:
+          repository: mikker/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN || github.token }}
+          path: tap
+
+      - name: Update cask
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="${TAG#v}"
+          url="https://github.com/mikker/Moves.app/releases/download/${TAG}/Moves.app.zip"
+          sha=$(curl -fsSL "${url}" | shasum -a 256 | awk '{print $1}')
+
+          cat > tap/Casks/moves.rb <<EOF
+          cask("moves") do
+            version("${version}")
+            sha256("${sha}")
+
+            url(
+              "https://github.com/mikker/Moves.app/releases/download/v#{version}/Moves.app.zip",
+              verified: "github.com/mikker/Moves.app/"
+            )
+            name("Moves")
+            desc("Position your windows juuust right")
+            homepage("https://getmoves.app")
+
+            livecheck do
+              url("https://mikker.github.io/Moves.app/appcast.xml")
+              strategy(:sparkle, &:short_version)
+            end
+
+            app("Moves.app")
+
+            zap(
+              trash: [
+                "~/Library/Application Support/Moves",
+                "~/Library/Caches/com.mikker.Moves",
+                "~/Library/Preferences/com.mikker.Moves.plist",
+                "~/Library/Saved Application State/com.mikker.Moves.savedState"
+              ]
+            )
+          end
+          EOF
+
+      - name: Commit and push
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="${TAG#v}"
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/moves.rb
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Update moves to ${version}"
+          git push

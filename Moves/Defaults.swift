@@ -20,7 +20,9 @@ extension Defaults.Keys {
 
   static let bringToFront = Key<Bool>("bringToFront", default: false)
 
-  static let showPrefsOnLaunch = Key<Bool>("showPrefsOnLaunch", default: true)
+  static let resizeFromClosestCorner = Key<Bool>("resizeFromClosestCorner", default: true)
+
+  static let showSettingsOnLaunch = Key<Bool>("showSettingsOnLaunch", default: true)
   static let showInMenubar = Key<Bool>("showInMenubar", default: true)
 
   static let excludedApplicationPaths = Key<Set<String>>("excludedApplicationPaths", default: [])

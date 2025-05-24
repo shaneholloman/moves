@@ -5,6 +5,7 @@ import Defaults
 class WindowHandler {
   var monitors: [Any?] = []
   var window: AccessibilityElement?
+  private var resizeCorner: ResizeCorner?
 
   var intention: Intention = .idle {
     didSet { intentionChanged(self.intention) }
@@ -16,6 +17,7 @@ class WindowHandler {
 
   func intentionChanged(_ intention: Intention) {
     removeMonitors()
+    resizeCorner = nil
 
     if intention == .idle {
       self.window = nil
@@ -36,6 +38,9 @@ class WindowHandler {
     }
 
     self.window = window
+    if intention == .resize && Defaults[.resizeFromClosestCorner] {
+      resizeCorner = resolveResizeCorner(for: window, at: NSEvent.mouseLocation)
+    }
 
     if Defaults[.bringToFront] {
       try? app?.setAttribute(.frontmost, value: true)
@@ -109,8 +114,85 @@ class WindowHandler {
   private func resize(_ event: NSEvent) {
     guard let window = self.window else { return }
     guard let size = window.size else { return }
-    let dest = CGSize(width: size.width + event.deltaX, height: size.height + event.deltaY)
-    window.resizeTo(dest)
+    guard let pos = window.position else { return }
+
+    if !Defaults[.resizeFromClosestCorner] {
+      let dest = CGSize(width: size.width + event.deltaX, height: size.height + event.deltaY)
+      window.resizeTo(dest)
+      return
+    }
+
+    let corner = resizeCorner ?? resolveResizeCorner(for: window, at: NSEvent.mouseLocation)
+    resizeCorner = corner
+    guard let corner else { return }
+
+    let minX = pos.x
+    let maxX = pos.x + size.width
+    let minY = pos.y
+    let maxY = pos.y + size.height
+
+    var movingX = corner.horizontal == .min ? minX : maxX
+    var movingY = corner.vertical == .min ? minY : maxY
+    let fixedX = corner.horizontal == .min ? maxX : minX
+    let fixedY = corner.vertical == .min ? maxY : minY
+
+    movingX += event.deltaX
+    movingY += event.deltaY
+
+    let newMinX = min(movingX, fixedX)
+    let newMaxX = max(movingX, fixedX)
+    let newMinY = min(movingY, fixedY)
+    let newMaxY = max(movingY, fixedY)
+
+    window.moveTo(CGPoint(x: newMinX, y: newMinY))
+    window.resizeTo(CGSize(width: newMaxX - newMinX, height: newMaxY - newMinY))
   }
 
+}
+
+private enum ResizeAxisEdge {
+  case min
+  case max
+}
+
+private struct ResizeCorner {
+  let horizontal: ResizeAxisEdge
+  let vertical: ResizeAxisEdge
+}
+
+private func resolveResizeCorner(
+  for window: AccessibilityElement,
+  at mouseLocation: CGPoint
+) -> ResizeCorner? {
+  guard let size = window.size else { return nil }
+  guard let pos = window.position else { return nil }
+
+  let axMouseLocation: CGPoint
+  if let mainScreen = NSScreen.main {
+    axMouseLocation = CGPoint(
+      x: mouseLocation.x,
+      y: mainScreen.frame.maxY - mouseLocation.y
+    )
+  } else {
+    axMouseLocation = mouseLocation
+  }
+
+  let minX = pos.x
+  let maxX = pos.x + size.width
+  let minY = pos.y
+  let maxY = pos.y + size.height
+  func distanceSquared(to point: CGPoint) -> CGFloat {
+    let dx = axMouseLocation.x - point.x
+    let dy = axMouseLocation.y - point.y
+    return dx * dx + dy * dy
+  }
+
+  let candidates: [(ResizeCorner, CGFloat)] = [
+    (ResizeCorner(horizontal: .min, vertical: .min), distanceSquared(to: CGPoint(x: minX, y: minY))),
+    (ResizeCorner(horizontal: .max, vertical: .min), distanceSquared(to: CGPoint(x: maxX, y: minY))),
+    (ResizeCorner(horizontal: .min, vertical: .max), distanceSquared(to: CGPoint(x: minX, y: maxY))),
+    (ResizeCorner(horizontal: .max, vertical: .max), distanceSquared(to: CGPoint(x: maxX, y: maxY))),
+  ]
+
+  return candidates.min { $0.1 < $1.1 }?.0
 }

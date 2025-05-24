@@ -15,11 +15,9 @@
 		4215A97A241D94D000FA8CE8 /* StatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215A979241D94D000FA8CE8 /* StatusItem.swift */; };
 		4215A97D241D970E00FA8CE8 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 4215A97C241D970E00FA8CE8 /* Defaults */; };
 		4215A97F241D975E00FA8CE8 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215A97E241D975E00FA8CE8 /* Defaults.swift */; };
-		4215A98C241E1A8500FA8CE8 /* ExcludesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215A98B241E1A8500FA8CE8 /* ExcludesViewController.swift */; };
+		42C9E5BA2F3B8B0D00A1B2C3 /* SettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C9E5B92F3B8B0D00A1B2C3 /* SettingsViews.swift */; };
+		42C9E5B82F3B8AEE00A1B2C3 /* ResizeModePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C9E5B72F3B8AEE00A1B2C3 /* ResizeModePreviewView.swift */; };
 		4215A98E241E1C4500FA8CE8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4215A98D241E1C4500FA8CE8 /* Main.storyboard */; };
-		4215A990241E1F7C00FA8CE8 /* General.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4215A98F241E1F7C00FA8CE8 /* General.xib */; };
-		4215A995241E204900FA8CE8 /* GeneralPreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215A994241E204900FA8CE8 /* GeneralPreferencesController.swift */; };
-		4215A997241EDB5E00FA8CE8 /* Excludes.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4215A996241EDB5E00FA8CE8 /* Excludes.xib */; };
 		4227577F2C1B95B600773782 /* Settings in Frameworks */ = {isa = PBXBuildFile; productRef = 4227577E2C1B95B600773782 /* Settings */; };
 		424987E72768C0050056FBEB /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 424987E62768C0050056FBEB /* Sparkle */; };
 		42B2A1532418317300CDEA5E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B2A1522418317300CDEA5E /* AppDelegate.swift */; };
@@ -73,11 +71,9 @@
 		4215A977241D8AD100FA8CE8 /* AccessibilityElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityElement.swift; sourceTree = "<group>"; };
 		4215A979241D94D000FA8CE8 /* StatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItem.swift; sourceTree = "<group>"; };
 		4215A97E241D975E00FA8CE8 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
-		4215A98B241E1A8500FA8CE8 /* ExcludesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludesViewController.swift; sourceTree = "<group>"; };
 		4215A98D241E1C4500FA8CE8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		4215A98F241E1F7C00FA8CE8 /* General.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = General.xib; sourceTree = "<group>"; };
-		4215A994241E204900FA8CE8 /* GeneralPreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesController.swift; sourceTree = "<group>"; };
-		4215A996241EDB5E00FA8CE8 /* Excludes.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Excludes.xib; sourceTree = "<group>"; };
+		42C9E5B92F3B8B0D00A1B2C3 /* SettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViews.swift; sourceTree = "<group>"; };
+		42C9E5B72F3B8AEE00A1B2C3 /* ResizeModePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeModePreviewView.swift; sourceTree = "<group>"; };
 		42B2A14F2418317300CDEA5E /* Moves.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Moves.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B2A1522418317300CDEA5E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42B2A1562418317400CDEA5E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -142,18 +138,16 @@
 				42BA5BB72DD335C000399BF4 /* ActiveWindow.swift */,
 				42B2A1522418317300CDEA5E /* AppDelegate.swift */,
 				4215A97E241D975E00FA8CE8 /* Defaults.swift */,
-				4215A98B241E1A8500FA8CE8 /* ExcludesViewController.swift */,
-				4215A994241E204900FA8CE8 /* GeneralPreferencesController.swift */,
 				4215A973241D463600FA8CE8 /* Intention.swift */,
 				4215A96F241C385800FA8CE8 /* Modifiers.swift */,
 				4215A975241D809600FA8CE8 /* Mouse.swift */,
 				4215A979241D94D000FA8CE8 /* StatusItem.swift */,
 				42FD3E03242DD54D00E4E639 /* String+matchingStrings.swift */,
+				42C9E5B92F3B8B0D00A1B2C3 /* SettingsViews.swift */,
 				4215A971241D446C00FA8CE8 /* WindowHandler.swift */,
+				42C9E5B72F3B8AEE00A1B2C3 /* ResizeModePreviewView.swift */,
 				42BA5BB92DD368DD00399BF4 /* WindowTemplate.swift */,
 				42B2A1562418317400CDEA5E /* Assets.xcassets */,
-				4215A996241EDB5E00FA8CE8 /* Excludes.xib */,
-				4215A98F241E1F7C00FA8CE8 /* General.xib */,
 			);
 			path = Moves;
 			sourceTree = "<group>";
@@ -223,7 +217,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 2620;
 				ORGANIZATIONNAME = Brainbow;
 				TargetAttributes = {
 					42B2A14E2418317300CDEA5E = {
@@ -268,8 +262,6 @@
 			files = (
 				4215A98E241E1C4500FA8CE8 /* Main.storyboard in Resources */,
 				42B2A1572418317400CDEA5E /* Assets.xcassets in Resources */,
-				4215A997241EDB5E00FA8CE8 /* Excludes.xib in Resources */,
-				4215A990241E1F7C00FA8CE8 /* General.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,14 +303,14 @@
 			files = (
 				4215A97F241D975E00FA8CE8 /* Defaults.swift in Sources */,
 				4215A972241D446C00FA8CE8 /* WindowHandler.swift in Sources */,
-				4215A98C241E1A8500FA8CE8 /* ExcludesViewController.swift in Sources */,
 				4215A976241D809600FA8CE8 /* Mouse.swift in Sources */,
+				42C9E5BA2F3B8B0D00A1B2C3 /* SettingsViews.swift in Sources */,
+				42C9E5B82F3B8AEE00A1B2C3 /* ResizeModePreviewView.swift in Sources */,
 				42FD3E04242DD54D00E4E639 /* String+matchingStrings.swift in Sources */,
 				4215A970241C385800FA8CE8 /* Modifiers.swift in Sources */,
 				42BA5BBA2DD368DD00399BF4 /* WindowTemplate.swift in Sources */,
 				42B2A1532418317300CDEA5E /* AppDelegate.swift in Sources */,
 				4215A974241D463600FA8CE8 /* Intention.swift in Sources */,
-				4215A995241E204900FA8CE8 /* GeneralPreferencesController.swift in Sources */,
 				42BA5BB82DD335C000399BF4 /* ActiveWindow.swift in Sources */,
 				4215A97A241D94D000FA8CE8 /* StatusItem.swift in Sources */,
 				4215A978241D8AD100FA8CE8 /* AccessibilityElement.swift in Sources */,
@@ -404,6 +396,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -462,6 +455,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};

@@ -10,20 +10,35 @@ extension Settings.PaneIdentifier {
 }
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
   @IBOutlet var sparkle: SPUStandardUpdaterController!
 
   let statusItem = StatusItem()
   let windowHandler = WindowHandler()
 
-  lazy var preferencesWindowController = SettingsWindowController(
+  lazy var settingsWindowController = SettingsWindowController(
     panes: [
-      GeneralPreferencesController(),
-      ExcludesViewController(),
-    ], style: .segmentedControl
+      Settings.Pane(
+        identifier: .general,
+        title: "General",
+        toolbarIcon: settingsIcon(named: "gearshape")
+      ) {
+        GeneralSettingsPane()
+      },
+      Settings.Pane(
+        identifier: .excludes,
+        title: "Excludes",
+        toolbarIcon: settingsIcon(named: "nosign")
+      ) {
+        ExcludesSettingsPane()
+      },
+    ],
+    style: .segmentedControl
   )
 
   func applicationDidFinishLaunching(_ aNotification: Notification) {
+    setSettingsActivation(active: false)
+
     Task {
       for await value in Defaults.updates(.showInMenubar) {
         if value {
@@ -35,7 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     statusItem.handleCheckForUpdates = { self.sparkle.checkForUpdates(nil) }
-    statusItem.handlePreferences = { self.preferencesWindowController.show() }
+    statusItem.handleSettings = { self.showSettingsWindow() }
 
     let modifiers = Modifiers { self.windowHandler.intention = $0 }
 
@@ -59,8 +74,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     Defaults[.accessibilityEnabled] = AXSwift.checkIsProcessTrusted(prompt: true)
 
-    if Defaults[.showPrefsOnLaunch] {
-      preferencesWindowController.show()
+    if Defaults[.showSettingsOnLaunch] {
+      showSettingsWindow()
     }
   }
 
@@ -69,7 +84,41 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
 
   func applicationDidBecomeActive(_ notification: Notification) {
-    preferencesWindowController.show()
+    showSettingsWindow()
+  }
+
+  func windowWillClose(_ notification: Notification) {
+    guard let window = notification.object as? NSWindow else { return }
+    if window == settingsWindowController.window {
+      setSettingsActivation(active: false)
+    }
+  }
+
+  private func showSettingsWindow() {
+    guard !isRunningForPreviews else { return }
+    setSettingsActivation(active: true)
+    settingsWindowController.window?.delegate = self
+    sanitizeSettingsWindowAutosave()
+    settingsWindowController.show()
+  }
+
+  private func setSettingsActivation(active: Bool) {
+    _ = NSApp.setActivationPolicy(active ? .regular : .accessory)
+  }
+
+  private var isRunningForPreviews: Bool {
+    ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+  }
+
+  private func sanitizeSettingsWindowAutosave() {
+    let key = "NSWindow Frame com.sindresorhus.Settings.FrameAutosaveName"
+    guard let stored = UserDefaults.standard.string(forKey: key) else { return }
+    guard !stored.contains("{") else { return }
+    UserDefaults.standard.removeObject(forKey: key)
+  }
+
+  private func settingsIcon(named systemName: String) -> NSImage {
+    NSImage(systemSymbolName: systemName, accessibilityDescription: nil) ?? NSImage()
   }
 
   // MARK: - URLs

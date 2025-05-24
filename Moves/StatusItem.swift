@@ -3,7 +3,7 @@ import Cocoa
 class StatusItem {
   var statusItem: NSStatusItem?
 
-  var handlePreferences: (() -> Void)?
+  var handleSettings: (() -> Void)?
   var handleCheckForUpdates: (() -> Void)?
 
   func enable() {
@@ -20,10 +20,10 @@ class StatusItem {
 
     let menu = NSMenu()
 
-    let preferencesItem = NSMenuItem(
-      title: "Preferences…", action: #selector(showPreferences), keyEquivalent: ",")
-    preferencesItem.target = self
-    menu.addItem(preferencesItem)
+    let settingsItem = NSMenuItem(
+      title: "Settings…", action: #selector(showSettings), keyEquivalent: ",")
+    settingsItem.target = self
+    menu.addItem(settingsItem)
 
     let updatesItem = NSMenuItem(
       title: "Check for updates…", action: #selector(checkForUpdates), keyEquivalent: "")
@@ -43,8 +43,8 @@ class StatusItem {
     NSStatusBar.system.removeStatusItem(item)
   }
 
-  @objc func showPreferences() {
-    handlePreferences?()
+  @objc func showSettings() {
+    handleSettings?()
   }
 
   @objc func checkForUpdates() {
