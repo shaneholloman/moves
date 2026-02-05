@@ -9,9 +9,12 @@ extension Settings.PaneIdentifier {
   static let excludes = Self("excludes")
 }
 
-@NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
-  @IBOutlet var sparkle: SPUStandardUpdaterController!
+  let sparkle = SPUStandardUpdaterController(
+    startingUpdater: true,
+    updaterDelegate: nil,
+    userDriverDelegate: nil
+  )
 
   let statusItem = StatusItem()
   let windowHandler = WindowHandler()
@@ -37,6 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
   )
 
   func applicationDidFinishLaunching(_ aNotification: Notification) {
+    setupMainMenu()
     setSettingsActivation(active: false)
 
     Task {
@@ -80,7 +84,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
   }
 
   func applicationWillTerminate(_ aNotification: Notification) {
-    // Insert code here to tear down your application
   }
 
   func applicationDidBecomeActive(_ notification: Notification) {
@@ -97,6 +100,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
   private func showSettingsWindow() {
     guard !isRunningForPreviews else { return }
     setSettingsActivation(active: true)
+    NSApp.activate(ignoringOtherApps: true)
     settingsWindowController.window?.delegate = self
     sanitizeSettingsWindowAutosave()
     settingsWindowController.show()
@@ -119,6 +123,66 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
   private func settingsIcon(named systemName: String) -> NSImage {
     NSImage(systemSymbolName: systemName, accessibilityDescription: nil) ?? NSImage()
+  }
+
+  // MARK: - Main Menu
+
+  private func setupMainMenu() {
+    let mainMenu = NSMenu()
+
+    let appMenuItem = NSMenuItem()
+    mainMenu.addItem(appMenuItem)
+
+    let appMenu = NSMenu()
+    appMenuItem.submenu = appMenu
+
+    let appName = ProcessInfo.processInfo.processName
+
+    appMenu.addItem(
+      withTitle: "About \(appName)",
+      action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)),
+      keyEquivalent: "")
+
+    appMenu.addItem(.separator())
+
+    let settingsItem = NSMenuItem(
+      title: "Settings…",
+      action: #selector(openSettingsFromMenu),
+      keyEquivalent: ",")
+    settingsItem.target = self
+    appMenu.addItem(settingsItem)
+
+    appMenu.addItem(.separator())
+
+    appMenu.addItem(
+      withTitle: "Hide \(appName)",
+      action: #selector(NSApplication.hide(_:)),
+      keyEquivalent: "h")
+
+    let hideOthers = NSMenuItem(
+      title: "Hide Others",
+      action: #selector(NSApplication.hideOtherApplications(_:)),
+      keyEquivalent: "h")
+    hideOthers.keyEquivalentModifierMask = [.command, .option]
+    appMenu.addItem(hideOthers)
+
+    appMenu.addItem(
+      withTitle: "Show All",
+      action: #selector(NSApplication.unhideAllApplications(_:)),
+      keyEquivalent: "")
+
+    appMenu.addItem(.separator())
+
+    appMenu.addItem(
+      withTitle: "Quit \(appName)",
+      action: #selector(NSApplication.terminate(_:)),
+      keyEquivalent: "q")
+
+    NSApp.mainMenu = mainMenu
+  }
+
+  @objc private func openSettingsFromMenu() {
+    showSettingsWindow()
   }
 
   // MARK: - URLs
@@ -160,16 +224,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         positionString = "topLeft"
       }
 
-      // Convert position string to WindowPosition enum
       let position: WindowPosition
       if let validPosition = WindowPosition(rawValue: positionString) {
         position = validPosition
       } else {
-        // Default to topLeft if invalid position provided
         position = .topLeft
       }
 
-      // Get screen dimensions for relative calculations
       let screenRect = NSScreen.main?.visibleFrame ?? .zero
 
       var width: CGFloat? = nil
@@ -198,7 +259,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         height = CGFloat(relativeHeight) * screenRect.height
       }
 
-      // Calculate X offset - try absoluteXOffset first, then relativeXOffset
       var xOffset: CGFloat = 0
       if let absoluteXOffset = queryItems.first(where: { $0.name == "absoluteXOffset" })?.value
         .flatMap({ CGFloat(Double($0) ?? 0) })
@@ -210,7 +270,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         xOffset = CGFloat(relativeXOffset) * screenRect.width
       }
 
-      // Calculate Y offset - try absoluteYOffset first, then relativeYOffset
       var yOffset: CGFloat = 0
       if let absoluteYOffset = queryItems.first(where: { $0.name == "absoluteYOffset" })?.value
         .flatMap({ CGFloat(Double($0) ?? 0) })
@@ -222,12 +281,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         yOffset = CGFloat(relativeYOffset) * screenRect.height
       }
 
-      // Position the window
       ActiveWindow.customPosition(
         position: position, width: width, height: height, xOffset: xOffset, yOffset: yOffset)
 
     default:
-      // Handle legacy paths or invalid URLs
       break
     }
   }
