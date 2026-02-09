@@ -36,12 +36,12 @@ class Modifiers {
   }
 
   private func removeOnMonitors() {
-    offMonitors.forEach { (monitor) in
+    onMonitors.forEach { (monitor) in
       guard let m = monitor else { return }
       NSEvent.removeMonitor(m)
     }
 
-    offMonitors = []
+    onMonitors = []
   }
 
   private func removeOffMonitors() {

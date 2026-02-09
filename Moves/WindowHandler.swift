@@ -6,6 +6,9 @@ class WindowHandler {
   var monitors: [Any?] = []
   var window: AccessibilityElement?
   private var resizeCorner: ResizeCorner?
+  private var trackedWindowOrigin: CGPoint = .zero
+  private var trackedWindowSize: CGSize = .zero
+  private var initialMouseLocation: CGPoint = .zero
 
   var intention: Intention = .idle {
     didSet { intentionChanged(self.intention) }
@@ -29,15 +32,25 @@ class WindowHandler {
 
     let app = window.application
 
-    // App is excluded?
-
     if let path = applicationPath(app: app),
       Defaults[.excludedApplicationPaths].contains(path)
     {
       return
     }
 
+    guard let trackedWindowOrigin = window.position else { return }
+    let trackedWindowSize: CGSize
+    if intention == .resize {
+      guard let size = window.size else { return }
+      trackedWindowSize = size
+    } else {
+      trackedWindowSize = .zero
+    }
+
     self.window = window
+    self.initialMouseLocation = loc
+    self.trackedWindowOrigin = trackedWindowOrigin
+    self.trackedWindowSize = trackedWindowSize
     if intention == .resize && Defaults[.resizeFromClosestCorner] {
       resizeCorner = resolveResizeCorner(for: window, at: NSEvent.mouseLocation)
     }
@@ -106,18 +119,25 @@ class WindowHandler {
 
   private func move(_ event: NSEvent) {
     guard let window = self.window else { return }
-    guard let pos = window.position else { return }
-    let dest = CGPoint(x: pos.x + event.deltaX, y: pos.y + event.deltaY)
+    let currentMouse = Mouse.location()
+    let dest = CGPoint(
+      x: trackedWindowOrigin.x + (currentMouse.x - initialMouseLocation.x),
+      y: trackedWindowOrigin.y + (currentMouse.y - initialMouseLocation.y)
+    )
     window.moveTo(dest)
   }
 
   private func resize(_ event: NSEvent) {
     guard let window = self.window else { return }
-    guard let size = window.size else { return }
-    guard let pos = window.position else { return }
+    let currentMouse = Mouse.location()
+    let dx = currentMouse.x - initialMouseLocation.x
+    let dy = currentMouse.y - initialMouseLocation.y
 
     if !Defaults[.resizeFromClosestCorner] {
-      let dest = CGSize(width: size.width + event.deltaX, height: size.height + event.deltaY)
+      let dest = CGSize(
+        width: max(50, trackedWindowSize.width + dx),
+        height: max(50, trackedWindowSize.height + dy)
+      )
       window.resizeTo(dest)
       return
     }
@@ -126,18 +146,15 @@ class WindowHandler {
     resizeCorner = corner
     guard let corner else { return }
 
-    let minX = pos.x
-    let maxX = pos.x + size.width
-    let minY = pos.y
-    let maxY = pos.y + size.height
+    let initMinX = trackedWindowOrigin.x
+    let initMaxX = trackedWindowOrigin.x + trackedWindowSize.width
+    let initMinY = trackedWindowOrigin.y
+    let initMaxY = trackedWindowOrigin.y + trackedWindowSize.height
 
-    var movingX = corner.horizontal == .min ? minX : maxX
-    var movingY = corner.vertical == .min ? minY : maxY
-    let fixedX = corner.horizontal == .min ? maxX : minX
-    let fixedY = corner.vertical == .min ? maxY : minY
-
-    movingX += event.deltaX
-    movingY += event.deltaY
+    let movingX = (corner.horizontal == .min ? initMinX : initMaxX) + dx
+    let movingY = (corner.vertical == .min ? initMinY : initMaxY) + dy
+    let fixedX = corner.horizontal == .min ? initMaxX : initMinX
+    let fixedY = corner.vertical == .min ? initMaxY : initMinY
 
     let newMinX = min(movingX, fixedX)
     let newMaxX = max(movingX, fixedX)
