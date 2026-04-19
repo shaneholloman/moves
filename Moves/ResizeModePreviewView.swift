@@ -36,7 +36,8 @@ final class ResizeModePreviewView: NSView {
     let outerRect = bounds.insetBy(dx: Style.outerInset, dy: Style.outerInset)
     let cornerRadius = min(outerRect.width, outerRect.height) * Style.cornerRadiusScale
 
-    let borderPath = NSBezierPath(roundedRect: outerRect, xRadius: cornerRadius, yRadius: cornerRadius)
+    let borderPath = NSBezierPath(
+      roundedRect: outerRect, xRadius: cornerRadius, yRadius: cornerRadius)
     borderPath.lineWidth = Style.borderWidth
     strokeColor.setStroke()
     borderPath.stroke()

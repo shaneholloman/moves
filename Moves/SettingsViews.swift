@@ -23,14 +23,14 @@ struct GeneralSettingsPane: View {
   var body: some View {
     Settings.Container(contentWidth: contentWidth) {
       Settings.Section(
-       title: "Modifiers",
-       bottomDivider: true,
-       verticalAlignment: .top
+        title: "Modifiers",
+        bottomDivider: true,
+        verticalAlignment: .top
       ) {
         Text("Hold these modifiers while moving your mouse to move or resize windows.")
-//          .settingDescription()
+          //          .settingDescription()
           .multilineTextAlignment(.leading)
-        
+
         Spacer()
 
         VStack(alignment: .leading, spacing: 10) {
@@ -45,7 +45,7 @@ struct GeneralSettingsPane: View {
             .frame(maxWidth: 200, alignment: .leading)
 
           Spacer()
-          
+
           Toggle("Bring window to front when handling", isOn: $bringToFront)
         }
       }
@@ -314,7 +314,8 @@ private struct ModifierSegments: NSViewRepresentable {
   }
 
   func makeNSView(context: Context) -> NSSegmentedControl {
-    let control = NSSegmentedControl(labels: labels, trackingMode: .selectAny, target: nil, action: nil)
+    let control = NSSegmentedControl(
+      labels: labels, trackingMode: .selectAny, target: nil, action: nil)
     control.segmentStyle = .rounded
     control.target = context.coordinator
     control.action = #selector(Coordinator.selectionChanged(_:))
@@ -374,16 +375,16 @@ private struct ExcludedAppItem: Identifiable {
 }
 
 #if DEBUG
-struct SettingsViews_Previews: PreviewProvider {
-  static var previews: some View {
-    Group {
-      GeneralSettingsPane()
-        .previewDisplayName("General")
-      ExcludesSettingsPane()
-        .previewDisplayName("Excludes")
+  struct SettingsViews_Previews: PreviewProvider {
+    static var previews: some View {
+      Group {
+        GeneralSettingsPane()
+          .previewDisplayName("General")
+        ExcludesSettingsPane()
+          .previewDisplayName("Excludes")
+      }
+      .frame(width: 520)
+      .preferredColorScheme(.dark)
     }
-    .frame(width: 520)
-    .preferredColorScheme(.dark)
   }
-}
 #endif

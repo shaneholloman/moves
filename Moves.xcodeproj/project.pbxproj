@@ -72,7 +72,7 @@
 		4215A979241D94D000FA8CE8 /* StatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItem.swift; sourceTree = "<group>"; };
 		4215A97E241D975E00FA8CE8 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		42A1B2C42F4D000000000002 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		42B2A14F2418317300CDEA5E /* Moves.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Moves.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42B2A14F2418317300CDEA5E /* Moves Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Moves Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B2A1522418317300CDEA5E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42B2A1562418317400CDEA5E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		42B2A15E2418317400CDEA5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -122,7 +122,7 @@
 		42B2A1502418317300CDEA5E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				42B2A14F2418317300CDEA5E /* Moves.app */,
+				42B2A14F2418317300CDEA5E /* Moves Dev.app */,
 				42B2A1642418317500CDEA5E /* MovesTests.xctest */,
 			);
 			name = Products;
@@ -188,7 +188,7 @@
 				4227577E2C1B95B600773782 /* Settings */,
 			);
 			productName = Moves;
-			productReference = 42B2A14F2418317300CDEA5E /* Moves.app */;
+			productReference = 42B2A14F2418317300CDEA5E /* Moves Dev.app */;
 			productType = "com.apple.product-type.application";
 		};
 		42B2A1632418317500CDEA5E /* MovesTests */ = {
@@ -469,7 +469,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 122;
+				CURRENT_PROJECT_VERSION = 124;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -483,7 +483,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.9.1;
+				MARKETING_VERSION = 1.9.2;
 				MOVES_URL_NAME = com.brnbw.moves.dev;
 				MOVES_URL_SCHEME = "moves-dev";
 				PRODUCT_BUNDLE_IDENTIFIER = com.brnbw.Moves.dev;
@@ -500,7 +500,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 122;
+				CURRENT_PROJECT_VERSION = 124;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -514,7 +514,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.9.1;
+				MARKETING_VERSION = 1.9.2;
 				MOVES_URL_NAME = com.brnbw.moves;
 				MOVES_URL_SCHEME = moves;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brnbw.Moves;

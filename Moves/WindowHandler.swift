@@ -92,7 +92,9 @@ class WindowHandler {
       return window
     }
 
-    guard let fallback = ActiveWindow.getFrontmost(), contains(loc, in: fallback) else { return nil }
+    guard let fallback = ActiveWindow.getFrontmost(), contains(loc, in: fallback) else {
+      return nil
+    }
     return fallback
   }
 
@@ -105,11 +107,14 @@ class WindowHandler {
 
     return windowList.lazy
       .compactMap { info in
-        guard let pid = (info[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value else { return nil }
+        guard let pid = (info[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value else {
+          return nil
+        }
         guard let layer = (info[kCGWindowLayer as String] as? NSNumber)?.intValue, layer == 0 else {
           return nil
         }
-        guard let alpha = (info[kCGWindowAlpha as String] as? NSNumber)?.doubleValue, alpha > 0 else {
+        guard let alpha = (info[kCGWindowAlpha as String] as? NSNumber)?.doubleValue, alpha > 0
+        else {
           return nil
         }
         guard let bounds = CGRect.dictionary(info[kCGWindowBounds as String]) else { return nil }
@@ -118,12 +123,16 @@ class WindowHandler {
       .first { $0.bounds.contains(loc) }
   }
 
-  private func window(matching onScreenWindow: OnScreenWindow, at loc: CGPoint) -> AccessibilityElement? {
+  private func window(matching onScreenWindow: OnScreenWindow, at loc: CGPoint)
+    -> AccessibilityElement?
+  {
     guard let app = Application(forProcessID: onScreenWindow.pid) else { return nil }
 
     let matchingWindow = windows(in: app)
       .compactMap { window -> (AccessibilityElement, CGFloat)? in
-        guard let frame = frame(of: window), frame.intersects(onScreenWindow.bounds) else { return nil }
+        guard let frame = frame(of: window), frame.intersects(onScreenWindow.bounds) else {
+          return nil
+        }
         return (window, frameDistance(frame, onScreenWindow.bounds))
       }
       .min { $0.1 < $1.1 }?
@@ -259,8 +268,8 @@ private struct OnScreenWindow {
   let bounds: CGRect
 }
 
-private extension CGRect {
-  static func dictionary(_ value: Any?) -> CGRect? {
+extension CGRect {
+  fileprivate static func dictionary(_ value: Any?) -> CGRect? {
     guard let dictionary = value as? NSDictionary else { return nil }
     return CGRect(dictionaryRepresentation: dictionary)
   }
@@ -304,10 +313,18 @@ private func resolveResizeCorner(
   }
 
   let candidates: [(ResizeCorner, CGFloat)] = [
-    (ResizeCorner(horizontal: .min, vertical: .min), distanceSquared(to: CGPoint(x: minX, y: minY))),
-    (ResizeCorner(horizontal: .max, vertical: .min), distanceSquared(to: CGPoint(x: maxX, y: minY))),
-    (ResizeCorner(horizontal: .min, vertical: .max), distanceSquared(to: CGPoint(x: minX, y: maxY))),
-    (ResizeCorner(horizontal: .max, vertical: .max), distanceSquared(to: CGPoint(x: maxX, y: maxY))),
+    (
+      ResizeCorner(horizontal: .min, vertical: .min), distanceSquared(to: CGPoint(x: minX, y: minY))
+    ),
+    (
+      ResizeCorner(horizontal: .max, vertical: .min), distanceSquared(to: CGPoint(x: maxX, y: minY))
+    ),
+    (
+      ResizeCorner(horizontal: .min, vertical: .max), distanceSquared(to: CGPoint(x: minX, y: maxY))
+    ),
+    (
+      ResizeCorner(horizontal: .max, vertical: .max), distanceSquared(to: CGPoint(x: maxX, y: maxY))
+    ),
   ]
 
   return candidates.min { $0.1 < $1.1 }?.0
