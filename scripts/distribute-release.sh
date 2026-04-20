@@ -141,12 +141,13 @@ extract_signature() {
 
 html_notes() {
   NOTES="$1" ruby -rcgi -e '
-    items = ENV.fetch("NOTES").lines.filter_map do |line|
+    items = []
+    ENV.fetch("NOTES").each_line do |line|
       line = line.strip
       next if line.empty?
       next unless line.start_with?("- ")
       text = line.sub(/^-\s+/, "")
-      "<li>#{CGI.escapeHTML(text)}</li>"
+      items << "<li>#{CGI.escapeHTML(text)}</li>"
     end
     items = ["<li>Maintenance release</li>"] if items.empty?
     puts "<ul>\n#{items.join("\n")}\n</ul>"
