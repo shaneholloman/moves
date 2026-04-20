@@ -10,6 +10,15 @@
 - ✨ Hold down your chosen modifier keys and move the mouse. No need to fiddle with 3px wide window edges or far away title bars.
 - ⚡️ Moves lives in your menubar and is very light weight. The only thing it does, it does well.
 
+## Release
+
+```sh
+cp .env.example .env
+just distribute
+```
+
+Pass `VERSION=1.9.3` to force the next version. Otherwise `just distribute` bumps the patch version, increments the build number, builds + notarizes `Moves.app`, uploads `Moves.app.zip` to GitHub Releases, updates `CHANGELOG.md`, writes `Updates/appcast.xml`, and updates `../homebrew-tap/Casks/moves.rb`. GitHub Pages publishes that committed `Updates/appcast.xml` at the existing app URL.
+
 ## URL schemes
 
 Moves supports the following URL schemes for window positioning:

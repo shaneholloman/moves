@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+<channel>
+<title>Moves</title>
+<item>
+<title>1.9.2</title>
+<pubDate>Sun, 19 Apr 2026 15:12:05 +0200</pubDate>
+<sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+<enclosure url="https://mikker.github.io/Moves.app/Moves.b35.zip" sparkle:version="124" sparkle:shortVersionString="1.9.2" length="1929011" type="application/octet-stream" sparkle:edSignature="C97GxCbT9SbYy0wtCLz5c1ehzio8NQD+Np2GrliSVYLcQneL4of+nvCJCpdBnJGT+pvOD/uLpo98KckVGzaiBQ=="/>
+<description><![CDATA[
+<ul>
+<li>Improved window under cursor detection for custom window apps like Telegram</li>
+</ul>
+]]></description>
+</item>
+</channel>
+</rss>

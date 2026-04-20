@@ -1,6 +1,9 @@
 Carthage/
 *.xcodeproj/xcuserdata/*
 *.xcuserdatad*
+build/
+dist/
 Updates/*
+!Updates/appcast.xml
 
 **/.claude/settings.local.json
