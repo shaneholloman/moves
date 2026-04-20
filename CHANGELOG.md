@@ -1,3 +1,8 @@
+## 1.9.3 (127)
+
+- Fix appcast notes generation
+- Simplify Sparkle release workflow
+
 # Changelog
 
 ## 1.9.2 (124)
