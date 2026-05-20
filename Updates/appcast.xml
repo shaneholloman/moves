@@ -3,14 +3,14 @@
 <channel>
 <title>Moves</title>
 <item>
-<title>1.9.3</title>
-<pubDate>Mon, 20 Apr 2026 12:02:44 +0000</pubDate>
+<title>1.9.4</title>
+<pubDate>Wed, 20 May 2026 08:14:10 +0000</pubDate>
 <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-<enclosure url="https://github.com/mikker/Moves.app/releases/download/v1.9.3/Moves.app.zip" sparkle:version="127" sparkle:shortVersionString="1.9.3" length="2043384" type="application/octet-stream" sparkle:edSignature="Khcf2mBhopv7Ws9rfb6bw9P9z4/x8Hzk+cyUYgNasK+nDnw6HZiAO0pLEsHCSBTvbeyL2TBcVMwY4b5w16rXDA=="/>
+<enclosure url="https://github.com/mikker/Moves.app/releases/download/v1.9.4/Moves.app.zip" sparkle:version="130" sparkle:shortVersionString="1.9.4" length="1930568" type="application/octet-stream" sparkle:edSignature="HB3PcleAOhp12VNJuJNsXq0GnU+MpFOCZdoKRBuEeb5hBp3qRmJ90qIWySU+fjmUNicfDcjPsAi4DD78TeCHCw=="/>
 <description><![CDATA[
 <ul>
-<li>Fix appcast notes generation</li>
-<li>Simplify Sparkle release workflow</li>
+<li>Default notarization profile</li>
+<li>Fix URL scheme command activation</li>
 </ul>
 ]]></description>
 </item>

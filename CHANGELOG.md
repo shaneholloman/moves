@@ -1,3 +1,8 @@
+## 1.9.4 (130)
+
+- Default notarization profile
+- Fix URL scheme command activation
+
 ## 1.9.3 (127)
 
 - Fix appcast notes generation
