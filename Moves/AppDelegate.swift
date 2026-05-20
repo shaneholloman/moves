@@ -86,8 +86,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
   func applicationWillTerminate(_ aNotification: Notification) {
   }
 
-  func applicationDidBecomeActive(_ notification: Notification) {
+  func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
     showSettingsWindow()
+    return false
   }
 
   func windowWillClose(_ notification: Notification) {
@@ -112,6 +113,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
   private var isRunningForPreviews: Bool {
     ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+  }
+
+  private var registeredURLSchemes: Set<String> {
+    guard let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]] else { return [] }
+    return Set(urlTypes.flatMap { $0["CFBundleURLSchemes"] as? [String] ?? [] })
   }
 
   private func sanitizeSettingsWindowAutosave() {
@@ -194,7 +200,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
   }
 
   private func handleURL(_ url: URL) {
-    guard url.scheme == "moves" else { return }
+    guard let scheme = url.scheme, registeredURLSchemes.contains(scheme) else { return }
 
     guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
       let host = url.host
