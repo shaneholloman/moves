@@ -102,7 +102,7 @@ class Modifiers {
   }
 
   private func globalMonitor(_ event: NSEvent) {
-    self.intention = self.intentionFrom(event.modifierFlags)
+    self.intention = self.intentionFrom(NSEvent.modifierFlags)
   }
 
   private func localMonitor(_ event: NSEvent) -> NSEvent? {
