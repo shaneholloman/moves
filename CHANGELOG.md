@@ -1,3 +1,7 @@
+## 1.9.5 (132)
+
+- Fix stale modifier tracking
+
 ## 1.9.4 (130)
 
 - Default notarization profile
